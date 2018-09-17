@@ -2,19 +2,13 @@ package com.curso.spring;
 
 import java.util.Arrays;
 
-import com.curso.spring.domain.Cidade;
-import com.curso.spring.domain.Estado;
-import com.curso.spring.repositories.CidadeRepository;
-import com.curso.spring.repositories.EstadoRepository;
+import com.curso.spring.domain.*;
+import com.curso.spring.enums.TipoCliente;
+import com.curso.spring.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.curso.spring.domain.Categoria;
-import com.curso.spring.domain.Produto;
-import com.curso.spring.repositories.CategoriaRepository;
-import com.curso.spring.repositories.ProdutoRepository;
 
 
 @SpringBootApplication
@@ -28,13 +22,17 @@ public class CursospringApplication implements CommandLineRunner{
 	private CidadeRepository cidadeRepository;
 	@Autowired
 	private EstadoRepository estadoRepository;
-	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(CursospringApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
+
 		Categoria cat1 = new Categoria(null, "Informática");
 		Categoria cat2 = new Categoria(null, "Escritório");
 		
@@ -53,6 +51,8 @@ public class CursospringApplication implements CommandLineRunner{
 		categoriaRepository.save(Arrays.asList(cat1, cat2));
 		produtoRepository.save(Arrays.asList(p1, p2, p3));
 
+		// -------------------------------------------------------------
+
 
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
@@ -66,5 +66,18 @@ public class CursospringApplication implements CommandLineRunner{
 
 		estadoRepository.save(Arrays.asList(est1, est2));
 		cidadeRepository.save(Arrays.asList(c1,c2,c3));
+
+		// -------------------------------------------------------------
+
+		Cliente cli1 = new Cliente(null, "Maria", "maria@gmail.com", "123456789", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("27363323", "489952365"));
+
+		Endereco e1 = new Endereco(null, "Rua flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
+		Endereco e2 = new Endereco(null, "Av Matos", "105", "Sala 800", "centro", "86226500", cli1, c2);
+
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+
+		clienteRepository.save(Arrays.asList(cli1));
+		enderecoRepository.save(Arrays.asList(e1,e2));
 	}
 }
