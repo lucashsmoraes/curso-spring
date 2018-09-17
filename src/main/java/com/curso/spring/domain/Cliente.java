@@ -28,6 +28,8 @@ public class Cliente implements Serializable {
     private List<Endereco> enderecos = new ArrayList<>();
 
 
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos = new ArrayList<>();
 
     // Conjunto não aceita repetição
     @ElementCollection
@@ -99,6 +101,14 @@ public class Cliente implements Serializable {
 
     public void setTipo(TipoCliente tipo) {
         this.tipo = tipo.getCod();
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 
     @Override

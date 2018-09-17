@@ -23,7 +23,7 @@ public class Endereco implements Serializable {
     @ManyToOne
     @JoinColumn(name = "cidade_id")
     private Cidade cidade;
-    
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "cliente_id")
