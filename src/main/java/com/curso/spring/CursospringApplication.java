@@ -1,8 +1,10 @@
 package com.curso.spring;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import com.curso.spring.domain.*;
+import com.curso.spring.enums.EstadoPagamento;
 import com.curso.spring.enums.TipoCliente;
 import com.curso.spring.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,12 @@ public class CursospringApplication implements CommandLineRunner{
 	private EnderecoRepository enderecoRepository;
 	@Autowired
 	private ClienteRepository clienteRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(CursospringApplication.class, args);
 	}
@@ -79,5 +87,23 @@ public class CursospringApplication implements CommandLineRunner{
 
 		clienteRepository.save(Arrays.asList(cli1));
 		enderecoRepository.save(Arrays.asList(e1,e2));
+
+		// ---------------------------------------------------------------
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+		Pedido pd1 = new Pedido(null, sdf.parse("14/09/2018 10:32"),cli1, e1);
+		Pedido pd2 = new Pedido(null, sdf.parse("15/09/2018 11:10"), cli1, e2);
+
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pd1, 6);
+		pd1.setPagamento(pagto1);
+
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pd2, sdf.parse("20/10/2017 00:00"), null);
+		pd2.setPagamento(pagto2);
+
+		cli1.getPedidos().addAll(Arrays.asList(pd1, pd2));
+
+		pedidoRepository.save(Arrays.asList(pd1, pd2));
+		pagamentoRepository.save(Arrays.asList(pagto1, pagto2));
 	}
 }
