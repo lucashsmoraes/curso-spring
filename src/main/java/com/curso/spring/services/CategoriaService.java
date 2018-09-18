@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoriaService{
 	
@@ -21,6 +23,10 @@ public class CategoriaService{
 					+ ", Tipo: " + Categoria.class.getName());
 		}
 		return obj;
+	}
+
+	public List<Categoria> findAll() {
+		return repo.findAll();
 	}
 
 	public Categoria insert(Categoria obj){
