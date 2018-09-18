@@ -1,5 +1,7 @@
 package com.curso.spring.resources.exceptions;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 
 public class StandardError implements Serializable{
@@ -7,6 +9,7 @@ public class StandardError implements Serializable{
 	
 	private Integer status;
 	private String msg;
+	@JsonFormat(pattern = "HH:mm")
 	private Long timeStamp;
 	
 	public StandardError(Integer status, String msg, Long timeStamp) {
