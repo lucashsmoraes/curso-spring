@@ -1,6 +1,7 @@
 package com.curso.spring.domain;
 
 import com.curso.spring.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ public abstract class Pagamento implements Serializable {
     private Integer id;
     private Integer estado;
 
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId // O Id do pagamento será o mesmo que o Id do pedido
