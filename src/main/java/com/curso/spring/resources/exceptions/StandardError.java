@@ -9,7 +9,6 @@ public class StandardError implements Serializable{
 	
 	private Integer status;
 	private String msg;
-	@JsonFormat(pattern = "HH:mm")
 	private Long timeStamp;
 	
 	public StandardError(Integer status, String msg, Long timeStamp) {
