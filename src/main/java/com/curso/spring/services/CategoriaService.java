@@ -1,6 +1,7 @@
 package com.curso.spring.services;
 
 import com.curso.spring.domain.Categoria;
+import com.curso.spring.dto.CategoriaDTO;
 import com.curso.spring.repositories.CategoriaRepository;
 import com.curso.spring.services.exceptions.DataIntegrityException;
 import com.curso.spring.services.exceptions.ObjectNotFoundException;
@@ -57,4 +58,7 @@ public class CategoriaService{
 		return repo.findAll(pageRequest);
 	}
 
+	public Categoria fromDTO(CategoriaDTO objDto){
+		return new Categoria(objDto.getId(), objDto.getNome());
+	}
 }
