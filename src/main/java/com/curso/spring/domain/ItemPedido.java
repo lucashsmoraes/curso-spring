@@ -69,6 +69,10 @@ public class ItemPedido implements Serializable {
         this.preco = preco;
     }
 
+    public double getSubtotal(){
+            return (preco - desconto) * quantidade;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

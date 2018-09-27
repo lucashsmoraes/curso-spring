@@ -90,6 +90,14 @@ public class Pedido implements Serializable {
         this.itens = itens;
     }
 
+    public double getValorTatol(){
+        double soma = 0;
+        for (ItemPedido ip : itens){
+            soma+= ip.getSubtotal();
+        }
+        return soma;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
