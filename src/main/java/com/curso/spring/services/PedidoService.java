@@ -5,10 +5,7 @@ import com.curso.spring.domain.Pagamento;
 import com.curso.spring.domain.PagamentoComBoleto;
 import com.curso.spring.domain.Pedido;
 import com.curso.spring.enums.EstadoPagamento;
-import com.curso.spring.repositories.ItemPedidoRepository;
-import com.curso.spring.repositories.PagamentoRepository;
-import com.curso.spring.repositories.PedidoRepository;
-import com.curso.spring.repositories.ProdutoRepository;
+import com.curso.spring.repositories.*;
 import com.curso.spring.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +25,8 @@ public class PedidoService {
 	private ProdutoRepository produtoRepository;
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
 	
 	public Pedido buscar(Integer id) {
 		Pedido obj = repo.findOne(id);
@@ -41,6 +40,7 @@ public class PedidoService {
 	public Pedido insert(Pedido obj){
 		obj.setId(null);
 		obj.setInstante(new Date());
+		obj.setCliente(clienteRepository.findOne(obj.getCliente().getId()));
 		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPagamento().setPedido(obj);
 		if (obj.getPagamento() instanceof PagamentoComBoleto){
@@ -51,10 +51,12 @@ public class PedidoService {
 		pagamentoRepository.save(obj.getPagamento());
 		for (ItemPedido ip : obj.getItens()){
 			ip.setDesconto(0.0);
-			ip.setPreco(produtoRepository.findOne(ip.getProduto().getId()).getPreco());
+			ip.setProduto(produtoRepository.findOne(ip.getProduto().getId()));
+			ip.setPreco(ip.getProduto().getPreco());
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.save(obj.getItens());
+		System.out.println(obj);
 		return obj;
 	}
 

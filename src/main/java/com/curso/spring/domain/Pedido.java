@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 
@@ -121,5 +124,27 @@ public class Pedido implements Serializable {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Pedido número: ");
+        sb.append(getId());
+        sb.append(", Instante: ");
+        sb.append(sdf.format(getInstante()));
+        sb.append(", Cliente: ");
+        sb.append(getCliente().getNome());
+        sb.append(", Situação do pagamento: ");
+        sb.append(getPagamento().getEstado().getDescricao());
+        sb.append("\nDetalhes:\n");
+        for (ItemPedido ip : getItens()){
+            sb.append(ip.toString());
+        }
+        sb.append("Valor Total: ");
+        sb.append(nf.format(getValorTatol()));
+        return sb.toString();
     }
 }

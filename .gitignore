@@ -1,4 +1,7 @@
 /target/
+/out/
+curso_spring.sql
+/src/main/java/META-INF/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
