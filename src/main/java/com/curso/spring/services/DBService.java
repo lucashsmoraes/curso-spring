@@ -2,6 +2,7 @@ package com.curso.spring.services;
 
 import com.curso.spring.domain.*;
 import com.curso.spring.enums.EstadoPagamento;
+import com.curso.spring.enums.PerfilCliente;
 import com.curso.spring.enums.TipoCliente;
 import com.curso.spring.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,13 +105,19 @@ public class DBService {
         Cliente cli1 = new Cliente(null, "Maria", "lucashsmoraes@gmail.com", "123456789", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("123") );
         cli1.getTelefones().addAll(Arrays.asList("27363323", "489952365"));
 
+        Cliente cli2 = new Cliente(null, "ZÉZÉ", "lucashm@gmail.com", "31628382740", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("123") );
+        cli2.getTelefones().addAll(Arrays.asList("27363323", "489952365"));
+        cli2.addPerfil(PerfilCliente.ADMIN);
+
         Endereco e1 = new Endereco(null, "Rua flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
         Endereco e2 = new Endereco(null, "Av Matos", "105", "Sala 800", "centro", "86226500", cli1, c2);
+        Endereco e3 = new Endereco(null, "Av C", "105", "Sala 2", "centro", "86226500", cli2, c2);
 
         cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+        cli2.getEnderecos().addAll(Arrays.asList(e3));
 
-        clienteRepository.save(Arrays.asList(cli1));
-        enderecoRepository.save(Arrays.asList(e1,e2));
+        clienteRepository.save(Arrays.asList(cli1, cli2));
+        enderecoRepository.save(Arrays.asList(e1,e2, e3));
 
         // ---------------------------------------------------------------
 

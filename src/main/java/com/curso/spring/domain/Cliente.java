@@ -1,5 +1,6 @@
 package com.curso.spring.domain;
 
+import com.curso.spring.enums.PerfilCliente;
 import com.curso.spring.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Cliente implements Serializable {
@@ -39,7 +41,13 @@ public class Cliente implements Serializable {
     @CollectionTable(name = "TELEFONE")
     private Set<String> telefones = new HashSet<>();
 
-    public Cliente(){}
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "PERFIS")
+    private Set<Integer> perfis = new HashSet<>();
+
+    public Cliente(){
+        addPerfil(PerfilCliente.CLIENTE);
+    }
 
     public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha) {
         this.id = id;
@@ -48,6 +56,7 @@ public class Cliente implements Serializable {
         this.cpfOuCnpj = cpfOuCnpj;
         this.tipo = (tipo==null) ? null : tipo.getCod();
         this.senha = senha;
+        addPerfil(PerfilCliente.CLIENTE);
     }
 
 
@@ -121,6 +130,14 @@ public class Cliente implements Serializable {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public Set<PerfilCliente> getPerfis(){
+        return perfis.stream().map(x -> PerfilCliente.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addPerfil(PerfilCliente perfil){
+        perfis.add(perfil.getCod());
     }
 
     @Override
