@@ -1,13 +1,15 @@
 package com.curso.spring.services;
 
-import com.curso.spring.domain.ItemPedido;
-import com.curso.spring.domain.Pagamento;
-import com.curso.spring.domain.PagamentoComBoleto;
-import com.curso.spring.domain.Pedido;
+import com.curso.spring.domain.*;
 import com.curso.spring.enums.EstadoPagamento;
 import com.curso.spring.repositories.*;
+import com.curso.spring.security.UserSS;
+import com.curso.spring.services.exceptions.AuthorizationException;
 import com.curso.spring.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -63,4 +65,12 @@ public class PedidoService {
 		return obj;
 	}
 
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		UserSS user = UserService.authenticated();
+		if (user == null){
+			throw new AuthorizationException("Acesso negado!");		}
+		PageRequest pageRequest = new PageRequest(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+		Cliente cliente = clienteRepository.findOne(user.getId());
+		return repo.findByCliente(cliente, pageRequest);
+	}
 }
