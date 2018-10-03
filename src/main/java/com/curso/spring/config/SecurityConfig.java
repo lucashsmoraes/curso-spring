@@ -3,6 +3,7 @@ package com.curso.spring.config;
 import java.util.Arrays;
 
 import com.curso.spring.security.JWTAuthenticationFilter;
+import com.curso.spring.security.JWTAuthorizationFilter;
 import com.curso.spring.security.JWTUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
