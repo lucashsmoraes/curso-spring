@@ -21,7 +21,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.List;
 
 @Service
@@ -35,6 +37,8 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
+	private S3Service s3Service;
 
 	public Cliente find(Integer id) {
 
@@ -110,5 +114,7 @@ public class ClienteService {
 		return cli;
 	}
 
-
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return s3Service.uploadFile(multipartFile);
+	}
 }

@@ -21,7 +21,5 @@ public class CursospringApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 
-		s3Service.uploadFile("/home/lucasmoraes/Pictures/img1.jpg");
-
 	}
 }
