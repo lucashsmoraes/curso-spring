@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 public class Cliente implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private String imageUrl;
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
@@ -138,6 +140,14 @@ public class Cliente implements Serializable {
 
     public void addPerfil(PerfilCliente perfil){
         perfis.add(perfil.getCod());
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override
